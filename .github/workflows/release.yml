@@ -24,6 +24,7 @@ jobs:
       # When executed by a release, checkout checks out the tag, not head
       - name: Switch to HEAD
         run: |
+          env
           git branch
           git checkout HEAD
           git branch
