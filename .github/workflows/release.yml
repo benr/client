@@ -38,9 +38,9 @@ jobs:
       - name: Commit VERSION file
         run: |
           echo ${VERSION} > VERSION
-          echo 'VERSION is ${VERSION}'
+          echo "VERSION is $VERSION"
           git add VERSION
           git config --global user.email "tools@mondoo.com"
           git config --global user.name "Mondoo Tools"
-          git commit -m 'Update VERSION to ${VERSION}'
+          git commit -m "Update VERSION to $VERSION"
           git push 
