@@ -9,7 +9,7 @@ on:
         description: 'Version that should be released'
         required: true
         default: '1.2.3'
-
+        
 jobs:
   update-version:
     runs-on: ubuntu-latest
@@ -19,13 +19,19 @@ jobs:
         with:
           ref: 'master'
           fetch-depth: 0
-      - name: Get Latest Tag
-        id: vars
-        uses: WyriHaximus/github-action-get-previous-tag@v1
-      # When executed by a release, checkout checks out the tag, not head
-      - run: |
-          echo '${{ steps.vars.outputs.tag }}' > VERSION
-      # Commit changes
+      - name: Version from Workflow Dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+      - name: Version from Release Tag
+        run: |
+          echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+      - name: Verify valid version
+        run: |
+          if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version: $VERSION"
+            exit 1
+          fi
       - name: Commit VERSION file
         run: |
           echo 'VERSION is ${{ steps.vars.outputs.tag }}'
