@@ -28,17 +28,23 @@ jobs:
         run: |
           echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
       - name: Verify valid version
+        id: vars
         run: |
           if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Invalid version: $VERSION"
             exit 1
           fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: Annotate
+        uses: yuzutech/annotations-action@v0.4.0
+        with:
+          title: 'Update Release Version to ${{ steps.vars.outputs.version }}'
       - name: Commit VERSION file
         run: |
-          echo $VERSION > VERSION
-          echo 'VERSION is ${{ env.VERSION }}'
+          echo ${VERSION} > VERSION
+          echo 'VERSION is ${VERSION}'
           git add VERSION
           git config --global user.email "tools@mondoo.com"
           git config --global user.name "Mondoo Tools"
-          git commit -m 'Update VERSION to ${{ steps.vars.outputs.tag }}'
+          git commit -m 'Update VERSION to ${VERSION}'
           git push 
