@@ -16,12 +16,14 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - name: Get Latest Tag
         id: vars
         uses: WyriHaximus/github-action-get-previous-tag@v1
       # When executed by a release, checkout checks out the tag, not head
       - name: Switch to HEAD
-        run: git switch master
+        run: git checkout HEAD^
       - run: |
           echo '${{ steps.vars.outputs.tag }}' > VERSION
       # Commit changes
