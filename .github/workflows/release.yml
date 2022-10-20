@@ -23,12 +23,6 @@ jobs:
         id: vars
         uses: WyriHaximus/github-action-get-previous-tag@v1
       # When executed by a release, checkout checks out the tag, not head
-      - name: Switch to HEAD
-        run: |
-          env
-          git branch
-          git checkout HEAD
-          git branch
       - run: |
           echo '${{ steps.vars.outputs.tag }}' > VERSION
       # Commit changes
@@ -39,4 +33,4 @@ jobs:
           git config --global user.email "tools@mondoo.com"
           git config --global user.name "Mondoo Tools"
           git commit -m 'Update VERSION to ${{ steps.vars.outputs.tag }}'
-          git push origin master -f
+          git push 
