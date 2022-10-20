@@ -21,7 +21,10 @@ jobs:
         uses: WyriHaximus/github-action-get-previous-tag@v1
       # When executed by a release, checkout checks out the tag, not head
       - name: Switch to HEAD
-        run: git switch -
+        run: |
+          git branch
+          git checkout HEAD
+          git branch
       - run: |
           echo '${{ steps.vars.outputs.tag }}' > VERSION
       # Commit changes
