@@ -35,7 +35,8 @@ jobs:
           fi
       - name: Commit VERSION file
         run: |
-          echo 'VERSION is ${{ steps.vars.outputs.tag }}'
+          echo $VERSION > VERSION
+          echo 'VERSION is ${{ env.VERSION }}'
           git add VERSION
           git config --global user.email "tools@mondoo.com"
           git config --global user.name "Mondoo Tools"
