@@ -19,14 +19,15 @@ jobs:
       - name: Get Latest Tag
         id: vars
         uses: WyriHaximus/github-action-get-previous-tag@v1
-      # runs go to generate the update
+      # When executed by a release, checkout checks out the tag, not head
+      - name: Switch to HEAD
+        run: git switch .
       - run: |
           echo '${{ steps.vars.outputs.tag }}' > VERSION
       # Commit changes
       - name: Commit VERSION file
         run: |
           echo 'VERSION is ${{ steps.vars.outputs.tag }}'
-          git checkout master
           git add VERSION
           git config --global user.email "tools@mondoo.com"
           git config --global user.name "Mondoo Tools"
